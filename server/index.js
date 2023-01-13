@@ -3,6 +3,8 @@ import bodyParser from "body-parser";
 import mongoose, { mongo } from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 import postRoutes from "./routes/posts.js";
 import userRoutes from "./routes/user.js";
@@ -31,6 +33,48 @@ mongoose
   )
   .catch((err) => console.log(err.message));
 
+const secret = "secret";
+
+app.post("/signup", async (req, res) => {
+  const { email, username, pass, firstname, lastname } = req.body;
+
+  try {
+    const oldUser = await UserModel.findOne({ username });
+
+    if (oldUser) return res.json({ message: "User exists" });
+
+    const hashedPass = await bcrypt.hash(pass, 12);
+
+    const result = new UserModel({
+      email: email,
+      username: username,
+      pass: hashedPass,
+      firstname: firstname,
+      lastname: lastname,
+    });
+
+    await result.save();
+
+    const token = jwt.sign(
+      {
+        username: result.username,
+        firstname: result.firstname,
+        lastname: result.lastname,
+        id: result._id,
+      },
+      secret,
+      { expiresIn: "1h" }
+    );
+
+    console.log(token);
+
+    localStorage.setItem("profile", result);
+
+    res.json({ result, token });
+  } catch (err) {
+    res.json({ message: "Register Failed" });
+  }
+});
 app.get("/users", async (req, res) => {
   const users = await UserModel.find();
   res.json(users);

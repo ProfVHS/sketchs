@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { signup } from "../actions/auth";
+import axios from "axios";
 
 function Register() {
   const [step, setStep] = useState(1);
@@ -31,15 +32,7 @@ function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    dispatch(signup(registerData, navigate));
-    console.log({
-      email: registerData.email,
-      username: registerData.username,
-      pass: registerData.pass,
-      firstname: registerData.firstname,
-      lastname: registerData.lastname,
-    });
+    axios.post(`http://localhost:5000/signup`, registerData);
   };
   return (
     <>

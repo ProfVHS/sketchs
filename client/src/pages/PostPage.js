@@ -23,11 +23,6 @@ function PostPage() {
 
   const user = JSON.parse(localStorage.getItem("profile"));
 
-  useEffect(() => {
-    dispatch(getUser());
-    dispatch(getPosts());
-  }, [dispatch]);
-
   return (
     <>
       <div className="flex items-center w-screen h-14 py-5 bg-white sticky top-0 z-50">
