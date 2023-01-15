@@ -29,14 +29,6 @@ function PostPage() {
         <div className="flex justify-center items-center h-full absolute">
           <img src={logo} className="w-12 h-12" />
           <img src={sketchs} className="w-24 h-24" />
-          <button
-            onClick={() => {
-              setOpenForm(true);
-            }}
-            className="bg-gray-200 m-2 p-2 w-40 rounded-lg font-semibold"
-          >
-            Napisz Post
-          </button>
         </div>
         <div className="flex justify-center items-center w-screen">
           <input
@@ -46,8 +38,16 @@ function PostPage() {
           />
         </div>
       </div>
-      <div className="flex items-center justify-center w-1/4 pt-20 absolute">
+      <div className="flex flex-col items-center justify-center w-1/4 pt-20 fixed">
         <UserCard user={user.result} />
+        <button
+          onClick={() => {
+            setOpenForm(true);
+          }}
+          className="bg-gray-200 my-5 mx-2 py-3 px-2 w-52 rounded-lg font-semibold text-lg"
+        >
+          Napisz Post
+        </button>
       </div>
       <div className="flex flex-col items-center bg-gray-50">
         {openForm && (

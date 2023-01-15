@@ -3,7 +3,7 @@ import defProfIcon from "../assets/blank.png";
 
 function UserCard({ user }) {
   return (
-    <div className="bg-white h-20 flex fixed justify-center items-center rounded-lg drop-shadow-md p-5">
+    <div className="bg-white h-20 flex justify-center items-center rounded-lg drop-shadow-md p-5">
       <img
         src={!user.profileIcon ? defProfIcon : user.profileIcon}
         className="rounded-full h-16 w-16"
