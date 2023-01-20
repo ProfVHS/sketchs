@@ -68,8 +68,6 @@ app.post("/signup", async (req, res) => {
 
     console.log(token);
 
-    localStorage.setItem("profile", result);
-
     res.json({ result, token });
   } catch (err) {
     res.json({ message: "Register Failed" });

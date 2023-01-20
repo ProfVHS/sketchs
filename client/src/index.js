@@ -11,6 +11,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import reducers from "./reducers";
 import PostPage from "./pages/PostPage";
 import Register from "./pages/Register";
+import AvatarCreator from "./pages/AvatarCreator";
 
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
 
@@ -23,6 +24,7 @@ root.render(
           <Route path="/" element={<App />} />
           <Route path="/posts" element={<PostPage />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/test" element={<AvatarCreator />} />
         </Routes>
       </BrowserRouter>
     </Provider>
