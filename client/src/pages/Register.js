@@ -33,6 +33,7 @@ function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.post(`http://localhost:5000/signup`, registerData);
+    navigate("/avatarcreator");
   };
   return (
     <>

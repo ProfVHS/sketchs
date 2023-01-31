@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { GithubPicker } from "react-color";
+import { ChromePicker, GithubPicker } from "react-color";
 
 function TopSelector({ setColor, setHeadType, topType, color }) {
   const [showColorPicker, setShowColorPicker] = useState(false);
@@ -49,22 +49,13 @@ function TopSelector({ setColor, setHeadType, topType, color }) {
         </div>
       </div>
       {showColorPicker && (
-        <GithubPicker
-          colors={[
-            "#f3f3f3",
-            "#FCB900",
-            "#ff6900",
-            "#7b1fa2",
-            "#1273de",
-            "#4caf50",
-            "#955353",
-          ]}
-          triangle="top-right"
-          onChangeComplete={(target) => {
+        <ChromePicker
+          disableAlpha={true}
+          color={color}
+          className="absolute top-44 left-80"
+          onChange={(target) => {
             setColor(target.hex);
-            setShowColorPicker(false);
           }}
-          className="absolute left-2 top-0"
         />
       )}
     </>

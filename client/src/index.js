@@ -24,7 +24,7 @@ root.render(
           <Route path="/" element={<App />} />
           <Route path="/posts" element={<PostPage />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/test" element={<AvatarCreator />} />
+          <Route path="/avatarcreator" element={<AvatarCreator />} />
         </Routes>
       </BrowserRouter>
     </Provider>

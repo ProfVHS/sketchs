@@ -9,16 +9,6 @@ import PantsAvatar from "../components/AvatarCreator/PantsAvatar";
 import PantsSelector from "../components/AvatarCreator/PantsSelector";
 
 function AvatarCreator() {
-  //   const width = 512;
-  //   const height = 512;
-  //   const canvas = createCanvas(width, height);
-  //   const context = canvas.getContext("2d");
-
-  //   context.fillStyle = "#764abc";
-  //   context.fillRect(0, 0, width, height);
-
-  //   const buffer = canvas.toDataURL("image/png");
-
   const [bgColor, setBgColor] = useState("#424242");
   const [skinColor, setSkinColor] = useState("#FFF");
   const [topColor, setTopColor] = useState("#FFF");
@@ -31,7 +21,7 @@ function AvatarCreator() {
   const [pantsType, setPantsType] = useState(1);
 
   const avatar = useRef(null);
-  const test = async () => {
+  const handleSubmit = async () => {
     console.log(bgColor);
 
     const dataUrl = await htmlToImage.toSvg(avatar.current);
@@ -72,7 +62,12 @@ function AvatarCreator() {
                 skinColor={skinColor}
               />
             </div>
-            <button onClick={test}>test</button>
+            <button
+              className="self-end font-poppins font-bold w-1/2 text-lg text-white uppercase bg-accent1 drop-shadow-md rounded-lg my-2 p-1 transition ease-in-out duration-150 hover:shadow-hover"
+              onClick={handleSubmit}
+            >
+              Zakończ
+            </button>
           </div>
           {editMenu === 1 && (
             <HeadSelector
