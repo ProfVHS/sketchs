@@ -6,9 +6,6 @@ import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-import postRoutes from "./routes/posts.js";
-import userRoutes from "./routes/user.js";
-
 import UserModel from "./models/user.js";
 import PostMessage from "./models/postMessage.js";
 
@@ -73,6 +70,41 @@ app.post("/signup", async (req, res) => {
     res.json({ message: "Register Failed" });
   }
 });
+
+app.post("/signin", async (req, res) => {
+  const { username, password } = req.body;
+
+  console.log(username);
+  console.log(password);
+
+  try {
+    const oldUser = await UserModel.findOne({ username });
+
+    if (!oldUser)
+      return res.status(404).json({ message: "User doesn't exist" });
+
+    console.log(oldUser);
+
+    const isPasswordCorrect = await bcrypt.compare(password, oldUser.pass);
+
+    if (!isPasswordCorrect)
+      return res.status(400).json({ message: "Invalid password" });
+
+    const token = jwt.sign(
+      {
+        username: oldUser.username,
+        id: oldUser._id,
+      },
+      secret,
+      { expiresIn: "1h" }
+    );
+
+    res.json({ result: oldUser, token });
+  } catch (err) {
+    console.log("err");
+  }
+});
+
 app.get("/users", async (req, res) => {
   const users = await UserModel.find();
   res.json(users);
@@ -85,6 +117,27 @@ app.get("/users/:id", async (req, res) => {
 
     res.json(user);
   } catch (err) {
+    res.json({ message: err });
+  }
+});
+
+app.post("/users/edit/:id", async (req, res) => {
+  const { id: _id } = req.params;
+  const avatar = req.body;
+  try {
+    const user = await UserModel.findById(_id);
+
+    const newUser = user;
+
+    const avatarurl = avatar.dataUrl;
+
+    newUser.profileIcon = avatarurl;
+
+    await UserModel.findByIdAndUpdate(_id, newUser);
+
+    res.json(user);
+  } catch (err) {
+    console.log("test");
     res.json({ message: err });
   }
 });

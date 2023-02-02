@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import axios from "axios";
 
-import { createPost, updatePost } from "../actions/posts";
-
 function Form({ currentId, setCurrentId, setOpenForm, creator }) {
   const [postData, setPostData] = useState({
     creator: creator._id,
@@ -101,6 +99,7 @@ function Form({ currentId, setCurrentId, setOpenForm, creator }) {
           <input
             className="p-2 bg-gray-300 rounded-lg drop-shadow my-2"
             type={"submit"}
+            value={"Napisz Post"}
           />
         </form>
       </div>

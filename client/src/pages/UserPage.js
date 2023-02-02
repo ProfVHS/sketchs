@@ -8,14 +8,16 @@ import Posts from "../components/Posts";
 import sketchs from "../assets/sketchS.svg";
 import logo from "../assets/logo.svg";
 import UserCard from "../components/UserCard";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import UserProfile from "../components/UserProfile";
 
-function PostPage() {
+function UserPage() {
   const [currentId, setCurrentId] = useState(null);
   const [openForm, setOpenForm] = useState(false);
-  const [search, setSearch] = useState();
 
   const navigate = useNavigate();
+
+  const { id } = useParams();
 
   useEffect(() => {
     currentId && setOpenForm(true);
@@ -28,7 +30,12 @@ function PostPage() {
   return (
     <>
       <div className="flex items-center w-screen h-14 py-5 bg-white sticky top-0 z-50">
-        <div className="flex justify-center items-center h-full absolute">
+        <div
+          className="flex justify-center items-center h-full absolute cursor-pointer"
+          onClick={() => {
+            navigate("/posts");
+          }}
+        >
           <img src={logo} className="w-12 h-12" />
           <img src={sketchs} className="w-24 h-24" />
         </div>
@@ -37,20 +44,7 @@ function PostPage() {
             className="bg-gray-100 drop-shadow-md pl-4 p-2 rounded-md w-1/4"
             placeholder="Szukaj"
             name="search"
-            onChange={(event) => {
-              setSearch(event.target.value);
-            }}
           />
-        </div>
-        <div className="absolute right-8 cursor-pointer">
-          <span
-            onClick={() => {
-              localStorage.clear("profile");
-              navigate("/login");
-            }}
-          >
-            Log out
-          </span>
         </div>
       </div>
       <div className="flex flex-col items-center justify-center w-1/4 pt-20 fixed">
@@ -65,6 +59,7 @@ function PostPage() {
         </button>
       </div>
       <div className="flex flex-col items-center bg-gray-50">
+        <UserProfile id={id} />
         {openForm && (
           <Form
             currentId={currentId}
@@ -77,11 +72,11 @@ function PostPage() {
         <Posts
           setCurrentId={setCurrentId}
           userId={user.result._id}
-          filter={search}
+          onProfileId={id}
         />
       </div>
     </>
   );
 }
 
-export default PostPage;
+export default UserPage;

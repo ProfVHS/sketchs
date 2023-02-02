@@ -3,16 +3,13 @@ import PersonalDetails from "../components/RegisterForm/PersonalDetails";
 import Security from "../components/RegisterForm/Security";
 import UserDetails from "../components/RegisterForm/UserDetails";
 
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { signup } from "../actions/auth";
 import axios from "axios";
 
 function Register() {
   const [step, setStep] = useState(1);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const nextStep = () => {
@@ -28,11 +25,16 @@ function Register() {
     lastname: "",
     pass: "",
     repass: "",
+    profileIcon: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios.post(`http://localhost:5000/signup`, registerData);
+    const { data } = await axios.post(
+      `http://localhost:5000/signup`,
+      registerData
+    );
+    localStorage.setItem("profile", JSON.stringify(data));
     navigate("/avatarcreator");
   };
   return (
@@ -54,12 +56,15 @@ function Register() {
               onChange={setRegisterData}
             />
           ) : (
-            <Security value={registerData} onChange={setRegisterData} />
+            <Security
+              value={registerData}
+              onChange={setRegisterData}
+              onSubmit={handleSubmit}
+            />
           )}
           <a className="text-xs text-indigo-600 underline" href="/login">
             Masz już konto? Zaloguj się tutaj!
           </a>
-          <button onClick={handleSubmit}>TEST</button>
         </div>
       </div>
       <div className="bg-[url('./assets/bg175x.png')] w-full h-screen opacity-20 absolute top-0 -z-10"></div>

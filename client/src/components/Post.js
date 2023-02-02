@@ -4,10 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import defAvatar from "../assets/blank.png";
 
-import { deletePost, likePost } from "../actions/posts";
+import { useNavigate } from "react-router-dom";
 
 function Post({ post, setCurrentId, creatorId, userId }) {
   const [postCreator, setPostCreator] = useState();
+
+  const selectedFileType = post.selectedFile.charAt(5);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`http://localhost:5000/users/${creatorId}`).then((response) => {
@@ -18,13 +22,23 @@ function Post({ post, setCurrentId, creatorId, userId }) {
     <div className="drop-shadow-md bg-white rounded-2xl my-5 p-6 w-1/2 flex flex-col items-center ">
       <div className="flex w-full justify-start items-center">
         <img
+          onClick={() => {
+            navigate(`/user/${creatorId}`);
+          }}
           src={
-            postCreator && postCreator.avatar ? postCreator.avatar : defAvatar
+            postCreator && postCreator.profileIcon
+              ? postCreator.profileIcon
+              : defAvatar
           }
-          className="w-14 h-14 mx-2 rounded-full"
+          className="w-14 h-14 mx-2 rounded-full object-cover object-top cursor-pointer"
         ></img>
         <div className="flex flex-col items-start ">
-          <span className="text-2xl">
+          <span
+            onClick={() => {
+              navigate(`/user/${creatorId}`);
+            }}
+            className="text-2xl cursor-pointer"
+          >
             @{postCreator && postCreator.username}
           </span>
           <span></span>
@@ -40,7 +54,19 @@ function Post({ post, setCurrentId, creatorId, userId }) {
             </div>
           ))}
       </div>
-      <img height={150} src={post.selectedFile} className="mt-4" />
+      {selectedFileType === "i" ? (
+        <img height={150} src={post.selectedFile} className="mt-4" />
+      ) : selectedFileType === "v" ? (
+        <video height={150} controls={true} className="mt-4">
+          <source src={post.selectedFile} />
+        </video>
+      ) : (
+        selectedFileType === "a" && (
+          <audio controls={true} className="mt-4">
+            <source src={post.selectedFile} />
+          </audio>
+        )
+      )}
       <span className="self-start whitespace-normal w-full">
         {post.message}
       </span>

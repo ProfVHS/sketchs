@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function Security({ value, onChange, onNext, onPrev }) {
+function Security({ value, onChange, onNext, onPrev, onSubmit }) {
   const [passError, setPassError] = useState();
   const [repassError, setRePassError] = useState();
   const validate = () => {
@@ -23,7 +23,7 @@ function Security({ value, onChange, onNext, onPrev }) {
     setRePassError(newRePassError);
 
     if (!newPassError && !newRePassError) {
-      //submit form
+      onSubmit();
     }
   };
   return (
@@ -83,7 +83,7 @@ function Security({ value, onChange, onNext, onPrev }) {
           onClick={validate}
           className="self-end font-poppins font-bold w-1/2 text-lg text-white uppercase bg-accent1 drop-shadow-md rounded-lg my-2 p-1 transition ease-in-out duration-150 hover:shadow-hover"
         >
-          Dalej
+          Zakończ
         </button>
       </div>
     </>

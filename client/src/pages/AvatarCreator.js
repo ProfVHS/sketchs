@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import * as htmlToImage from "html-to-image";
 import HeadSelector from "../components/AvatarCreator/HeadSelector";
 
@@ -7,6 +7,10 @@ import TopAvatar from "../components/AvatarCreator/TopAvatar";
 import TopSelector from "../components/AvatarCreator/TopSelector";
 import PantsAvatar from "../components/AvatarCreator/PantsAvatar";
 import PantsSelector from "../components/AvatarCreator/PantsSelector";
+
+import axios from "axios";
+
+import { useNavigate } from "react-router-dom";
 
 function AvatarCreator() {
   const [bgColor, setBgColor] = useState("#424242");
@@ -19,19 +23,25 @@ function AvatarCreator() {
   const [headType, setHeadType] = useState(1);
   const [topType, setTopType] = useState(1);
   const [pantsType, setPantsType] = useState(1);
-
   const avatar = useRef(null);
+
+  const activeUser = JSON.parse(localStorage.getItem("profile"));
+
+  const navigate = useNavigate();
+
   const handleSubmit = async () => {
     console.log(bgColor);
 
     const dataUrl = await htmlToImage.toSvg(avatar.current);
 
-    console.log(dataUrl);
+    const avatarData = { dataUrl };
 
-    const link = document.createElement("a");
-    link.download = "avatar.png";
-    link.href = dataUrl;
-    link.click();
+    axios.post(
+      `http://localhost:5000/users/edit/${activeUser.result._id}`,
+      avatarData
+    );
+
+    navigate("/posts");
   };
 
   return (
@@ -49,7 +59,6 @@ function AvatarCreator() {
               style={{ backgroundColor: `${bgColor}` }}
             >
               <HeadAvatar headType={headType} skinColor={skinColor} />
-              {/* <SkullEye1 className="relative -translate-y-20 -bottom-1 -translate-x-2 z-30" /> */}
 
               <TopAvatar
                 topType={topType}
@@ -62,12 +71,22 @@ function AvatarCreator() {
                 skinColor={skinColor}
               />
             </div>
-            <button
-              className="self-end font-poppins font-bold w-1/2 text-lg text-white uppercase bg-accent1 drop-shadow-md rounded-lg my-2 p-1 transition ease-in-out duration-150 hover:shadow-hover"
-              onClick={handleSubmit}
-            >
-              Zakończ
-            </button>
+            <div className="flex gap-2">
+              <button
+                className="self-start font-poppins font-bold w-1/2 text-lg text-white uppercase bg-accent1 drop-shadow-md rounded-lg my-2 p-1 transition ease-in-out duration-150 hover:shadow-hover"
+                onClick={() => {
+                  navigate("/posts");
+                }}
+              >
+                Anuluj
+              </button>
+              <button
+                className="self-end font-poppins font-bold w-1/2 text-lg text-white uppercase bg-accent1 drop-shadow-md rounded-lg my-2 p-1 transition ease-in-out duration-150 hover:shadow-hover"
+                onClick={handleSubmit}
+              >
+                Zapisz
+              </button>
+            </div>
           </div>
           {editMenu === 1 && (
             <HeadSelector

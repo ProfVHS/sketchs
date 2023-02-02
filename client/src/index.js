@@ -8,12 +8,13 @@ import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import reducers from "./reducers";
 import PostPage from "./pages/PostPage";
 import Register from "./pages/Register";
 import AvatarCreator from "./pages/AvatarCreator";
+import UserPage from "./pages/UserPage";
+import Login from "./pages/Login";
 
-const store = createStore(reducers, compose(applyMiddleware(thunk)));
+const store = createStore(compose(applyMiddleware(thunk)));
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -23,7 +24,9 @@ root.render(
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/posts" element={<PostPage />} />
+          <Route path="/user/:id" element={<UserPage />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/avatarcreator" element={<AvatarCreator />} />
         </Routes>
       </BrowserRouter>
